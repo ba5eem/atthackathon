@@ -1,21 +1,25 @@
 
-const express = require('express');
-const router = express.Router();
-const bodyParser = require('body-parser');
-const app = express();
-const PORT = 8888;
+const express         = require('express');
+const router          = express.Router();
+const bodyParser      = require('body-parser');
+const app             = express();
+const PORT            = process.env.PORT || 8080;
 
 // Connect and configure AWS
-const AWS = require('aws-sdk');
-const AWS = require('aws-sdk/global');
+const AWS             = require('aws-sdk');
+//const AWS             = require('aws-sdk/global');
 AWS.config.update({region: 'us-east-1'});
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: false}));
 
 const rekognition = new AWS.Rekognition();
 
 app.get('/', ( req, res ) =>{
   res.json('Smoke Test');
+});
+
+app.get('*', ( req, res ) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 /*
 app.get('/', function(req, res, next) {
