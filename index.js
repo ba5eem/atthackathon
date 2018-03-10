@@ -5,8 +5,10 @@ const axios = require('axios');
 const vision = require('node-cloud-vision-api')
 vision.init({auth: process.env.VISION_KEY})
 
+const image = './bat.jpg'; // or image save from front-end
+
 const req = new vision.Request({
-  image: new vision.Image('./bat.jpg'),
+  image: new vision.Image(image),
   features: [
     new vision.Feature('FACE_DETECTION', 4),
     new vision.Feature('LABEL_DETECTION', 10),
