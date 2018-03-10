@@ -33,9 +33,7 @@ app.get('/', (request, res) => {
 	  let sorrow = getStats(ext.sorrowLikelihood);
 	  let anger = getStats(ext.angerLikelihood);
 	  let surprise = getStats(ext.surpriseLikelihood);
-
 	  let analysis = [{
-		  	detectionConfidence: ext.detectionConfidence * 100 +'%',
 		  	joy: joy,
 		  	sorrow: sorrow,
 		  	anger: anger,
@@ -48,11 +46,16 @@ app.get('/', (request, res) => {
 		  	VERY_UNLIKELY: 20,
 		  	UNKNOWN: 0
 	  	},{
-		  	joy: 'pink/yellow',
+		  	joy: 'pink/yellow', 
 		  	sorrow: 'blue/grey',
 		  	anger: 'red/purple',
 		  	suprised: 'yellow'
+	  	},{
+	  		highest: undefined
 	  	}]
+	  let obj = analysis[0]; // emotion object
+	  let highest = Object.keys(obj).reduce((a, b) => obj[a] > obj[b] ? a : b);
+	  analysis[3].highest = highest;
 	  res.json(analysis);
 		}, (e) => {
 	  	console.log('Error: ')
