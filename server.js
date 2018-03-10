@@ -1,38 +1,83 @@
 
+require('dotenv').config();
 const express         = require('express');
 const router          = express.Router();
 const bodyParser      = require('body-parser');
 const app             = express();
 const PORT            = process.env.PORT || 8080;
+const axios = require('axios');
+const vision = require('node-cloud-vision-api');
+vision.init({auth: process.env.VISION_KEY})
 
-// Connect and configure AWS
-const AWS             = require('aws-sdk');
-//const AWS             = require('aws-sdk/global');
-AWS.config.update({region: 'us-east-1'});
+const image = './sorrow.jpg'; // or image save from front-end
 
-app.use(bodyParser.urlencoded({extended: false}));
+const req = new vision.Request({
+  image: new vision.Image(image),
+  features: [
+    new vision.Feature('FACE_DETECTION', 4),
+    new vision.Feature('LABEL_DETECTION', 10),
+  ]
+})
 
-const rekognition = new AWS.Rekognition();
+function getStats(param){
+  let score;
+  if(param === 'VERY_LIKELY'){ score = 100 }
+  if(param === 'LIKELY'){ score = 90 }
+  if(param === 'POSSIBLE'){ score = 80 }
+  if(param === 'UNLIKELY'){ score = 30 }
+  if(param === 'VERY_UNLIKELY'){ score = 20 }
+  if(param === 'UNKNOWN'){ score = 0 }
+  return score;
+}
 
-app.get('/', ( req, res ) =>{
-  res.json('Smoke Test');
+app.get('/', (request, res) => {
+  vision.annotate(req).then((elem) => {
+    let ext = elem.responses[0].faceAnnotations[0];
+    let joy = getStats(ext.joyLikelihood);
+    let sorrow = getStats(ext.sorrowLikelihood);
+    let anger = getStats(ext.angerLikelihood);
+    let surprise = getStats(ext.surpriseLikelihood);
+
+    let analysis = [{
+        detectionConfidence: ext.detectionConfidence * 100 +'%',
+        joy: joy,
+        sorrow: sorrow,
+        anger: anger,
+        surprise: surprise,
+      },{
+        VERY_LIKELY: 100,
+        LIKELY: 90,
+        POSSIBLE: 80,
+        UNLIKELY: 30,
+        VERY_UNLIKELY: 20,
+        UNKNOWN: 0
+      },{
+        joy: 'pink/yellow',
+        sorrow: 'blue/grey',
+        anger: 'red/purple',
+        suprised: 'yellow'
+      },{
+        highest: undefined
+      }]
+    let obj = analysis[0]; // emotion object
+    let highest = Object.keys(obj).reduce((a, b) => obj[a] > obj[b] ? a : b);
+    analysis[3].highest = highest;
+    res.json(analysis);
+    }, (e) => {
+      console.log('Error: ')
+  })
+})
+
+app.post("/", (req, res) => {
+//handle meee!!! in progress
 });
+
+
+
 
 app.get('*', ( req, res ) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
-/*
-app.get('/', function(req, res, next) {
-  rekognition.recognizeFace(params, function (err, data) {
-    if (err) console.log(err, err.stack);
-      else {
-      name = data.screenshotFace[0].Name;
-      id = data.screenshotFace[0].Urls[0].match(/nm(.*)/)[0];
-      res.send(name)
-    }
-  });
-});
-*/
 
 
 const server = app.listen(PORT,() => {
