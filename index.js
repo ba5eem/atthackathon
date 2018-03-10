@@ -34,19 +34,25 @@ app.get('/', (request, res) => {
 	  let anger = getStats(ext.angerLikelihood);
 	  let surprise = getStats(ext.surpriseLikelihood);
 
-	  let analysis = {
-	  	detectionConfidence: ext.detectionConfidence * 100 +'%',
-	  	joy: joy,
-	  	sorrow: sorrow,
-	  	anger: anger,
-	  	surprise: surprise,
-	  	VERY_LIKELY: 100,
-	  	LIKELY: 90,
-	  	POSSIBLE: 80,
-	  	UNLIKELY: 30,
-	  	VERY_UNLIKELY: 20,
-	  	UNKNOWN: 0
-	  }
+	  let analysis = [{
+		  	detectionConfidence: ext.detectionConfidence * 100 +'%',
+		  	joy: joy,
+		  	sorrow: sorrow,
+		  	anger: anger,
+		  	surprise: surprise,
+	  	},{
+		  	VERY_LIKELY: 100,
+		  	LIKELY: 90,
+		  	POSSIBLE: 80,
+		  	UNLIKELY: 30,
+		  	VERY_UNLIKELY: 20,
+		  	UNKNOWN: 0
+	  	},{
+		  	joy: 'pink/yellow',
+		  	sorrow: 'blue/grey',
+		  	anger: 'red/purple',
+		  	suprised: 'yellow'
+	  	}]
 	  res.json(analysis);
 		}, (e) => {
 	  	console.log('Error: ')
