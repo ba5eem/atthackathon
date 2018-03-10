@@ -27,6 +27,7 @@
     canvas.getContext('2d').drawImage(video, 0, 0);
     // Other browsers will fall back to image/png
     img.src = canvas.toDataURL('image/webp');
+    
   }, 1000);
   
   function handleSuccess(stream) {
