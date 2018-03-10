@@ -11,7 +11,7 @@ vision.init({auth: process.env.VISION_KEY})
 
 const image = './sorrow.jpg'; // or image save from front-end
 
-const req = new vision.Request({
+const visionReq = new vision.Request({
   image: new vision.Image(image),
   features: [
     new vision.Feature('FACE_DETECTION', 4),
@@ -31,12 +31,22 @@ function getStats(param){
 }
 
 app.get('/', (request, res) => {
-  vision.annotate(req).then((elem) => {
+  vision.annotate(visionReq).then((elem) => {
     let ext = elem.responses[0].faceAnnotations[0];
     let joy = getStats(ext.joyLikelihood);
     let sorrow = getStats(ext.sorrowLikelihood);
     let anger = getStats(ext.angerLikelihood);
     let surprise = getStats(ext.surpriseLikelihood);
+
+    let label_results = elem.responses[0].labelAnnotations;
+
+    console.log('label results', label_results);
+
+    let foundClown = label_results.some(labelObj => {
+      return labelObj.description === 'clown';
+    });
+
+    console.log('foundClown', foundClown);
 
     let analysis = [{
         detectionConfidence: ext.detectionConfidence * 100 +'%',
@@ -57,11 +67,14 @@ app.get('/', (request, res) => {
         anger: 'red/purple',
         suprised: 'yellow'
       },{
-        highest: undefined
+        highest: undefined,
+        clown: undefined
       }]
     let obj = analysis[0]; // emotion object
     let highest = Object.keys(obj).reduce((a, b) => obj[a] > obj[b] ? a : b);
     analysis[3].highest = highest;
+    analysis[3].clown = foundClown;
+
     res.json(analysis);
     }, (e) => {
       console.log('Error: ')
