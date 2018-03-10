@@ -9,7 +9,7 @@ const axios = require('axios');
 const vision = require('node-cloud-vision-api');
 vision.init({auth: process.env.VISION_KEY})
 
-const image = './angry.jpg'; // or image save from front-end
+const image = './sorrow.jpg'; // or image save from front-end
 
 const req = new vision.Request({
   image: new vision.Image(image),
@@ -56,16 +56,24 @@ app.get('/', (request, res) => {
         sorrow: 'blue/grey',
         anger: 'red/purple',
         suprised: 'yellow'
+      },{
+        highest: undefined
       }]
+    let obj = analysis[0]; // emotion object
+    let highest = Object.keys(obj).reduce((a, b) => obj[a] > obj[b] ? a : b);
+    analysis[3].highest = highest;
     res.json(analysis);
     }, (e) => {
       console.log('Error: ')
   })
 })
 
-/*app.get('/', ( req, res ) =>{
-  res.json('Smoke Test');
-});*/
+app.post("/", (req, res) => {
+//handle meee!!! in progress
+});
+
+
+
 
 app.get('*', ( req, res ) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
