@@ -4,6 +4,16 @@ const app = express();
 const axios = require('axios');
 const vision = require('node-cloud-vision-api')
 vision.init({auth: process.env.VISION_KEY})
+const search = require('youtube-search');//npm package
+
+
+
+//YOUTUBE CODE:
+const uTubeOpts = {
+  maxResults: 1,
+  key: process.env.VISION_KEY // 
+}; //options
+//
 
 const image = './bat.jpg'; // or image save from front-end
 
@@ -51,12 +61,20 @@ app.get('/', (request, res) => {
 		  	anger: 'red/purple',
 		  	suprised: 'yellow'
 	  	},{
-	  		highest: undefined
+	  		highest: undefined,
+	  		video: undefined
 	  	}]
 	  let obj = analysis[0]; // emotion object
+
 	  let highest = Object.keys(obj).reduce((a, b) => obj[a] > obj[b] ? a : b);
 	  analysis[3].highest = highest;
-	  res.json(analysis);
+		//video search done here from highest emotion
+			search(highest, uTubeOpts, (err, response) => {
+				console.log(highest);
+				if(err){ console.log('error with youtube') }
+				analysis[3].video = response[0].link;
+				res.json(analysis); // return of analysis object including youtube video link
+			})
 		}, (e) => {
 	  	console.log('Error: ')
 	})
