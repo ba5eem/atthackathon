@@ -11,13 +11,13 @@ vision.init({auth: process.env.VISION_KEY})
 
 let image;
 
-// const req = new vision.Request({
-//   image: new vision.Image(image),
-//   features: [
-//     new vision.Feature('FACE_DETECTION', 4),
-//     new vision.Feature('LABEL_DETECTION', 10),
-//   ]
-// })
+const req = new vision.Request({
+  image: new vision.Image(image),
+  features: [
+    new vision.Feature('FACE_DETECTION', 4),
+    new vision.Feature('LABEL_DETECTION', 10),
+  ]
+})
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -41,13 +41,13 @@ app.get('/', (request, res) => {
   console.log(request.body)
   image = request.body;
 
-  const req = new vision.Request({
-  image: new vision.Image(image),
-  features: [
-    new vision.Feature('FACE_DETECTION', 4),
-    new vision.Feature('LABEL_DETECTION', 10),
-  ]
-})
+//   const req = new vision.Request({
+//   image: new vision.Image(image),
+//   features: [
+//     new vision.Feature('FACE_DETECTION', 4),
+//     new vision.Feature('LABEL_DETECTION', 10),
+//   ]
+// })
 
   vision.annotate(req).then((elem) => {
     let ext = elem.responses[0].faceAnnotations[0];
@@ -55,6 +55,16 @@ app.get('/', (request, res) => {
     let sorrow = getStats(ext.sorrowLikelihood);
     let anger = getStats(ext.angerLikelihood);
     let surprise = getStats(ext.surpriseLikelihood);
+
+    let label_results = elem.responses[0].labelAnnotations;
+
+    console.log('label results', label_results);
+
+    let foundClown = label_results.some(labelObj => {
+      return labelObj.description === 'clown';
+    });
+
+    console.log('foundClown', foundClown);
 
     let analysis = [{
         detectionConfidence: ext.detectionConfidence * 100 +'%',
@@ -75,11 +85,14 @@ app.get('/', (request, res) => {
         anger: 'red/purple',
         suprised: 'yellow'
       },{
-        highest: undefined
+        highest: undefined,
+        clown: undefined
       }]
     let obj = analysis[0]; // emotion object
     let highest = Object.keys(obj).reduce((a, b) => obj[a] > obj[b] ? a : b);
     analysis[3].highest = highest;
+    analysis[3].clown = foundClown;
+
     res.json(analysis);
     }, (e) => {
       console.log('Error: ')
