@@ -9,15 +9,17 @@ const axios = require('axios');
 const vision = require('node-cloud-vision-api');
 vision.init({auth: process.env.VISION_KEY})
 
-const image = './sorrow.jpg'; // or image save from front-end
+let image;
 
-const req = new vision.Request({
-  image: new vision.Image(image),
-  features: [
-    new vision.Feature('FACE_DETECTION', 4),
-    new vision.Feature('LABEL_DETECTION', 10),
-  ]
-})
+// const req = new vision.Request({
+//   image: new vision.Image(image),
+//   features: [
+//     new vision.Feature('FACE_DETECTION', 4),
+//     new vision.Feature('LABEL_DETECTION', 10),
+//   ]
+// })
+
+app.use(bodyParser.urlencoded({ extended: false }))
 
 function getStats(param){
   let score;
@@ -30,7 +32,23 @@ function getStats(param){
   return score;
 }
 
+app.post("/api/load", (request, res) => {
+  console.log('aldkfjlaksdj', request.body)
+  
+});
+
 app.get('/', (request, res) => {
+  console.log(request.body)
+  image = request.body;
+
+  const req = new vision.Request({
+  image: new vision.Image(image),
+  features: [
+    new vision.Feature('FACE_DETECTION', 4),
+    new vision.Feature('LABEL_DETECTION', 10),
+  ]
+})
+
   vision.annotate(req).then((elem) => {
     let ext = elem.responses[0].faceAnnotations[0];
     let joy = getStats(ext.joyLikelihood);
@@ -67,13 +85,6 @@ app.get('/', (request, res) => {
       console.log('Error: ')
   })
 })
-
-app.post("/", (req, res) => {
-//handle meee!!! in progress
-});
-
-
-
 
 app.get('*', ( req, res ) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));

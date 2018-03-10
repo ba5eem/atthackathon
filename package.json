@@ -25,5 +25,6 @@
   "bugs": {
     "url": "https://github.com/ba5eem/atthackathon/issues"
   },
-  "homepage": "https://github.com/ba5eem/atthackathon#readme"
+  "homepage": "https://github.com/ba5eem/atthackathon#readme",
+  "proxy": "http://127.0.0.1:8080/"
 }

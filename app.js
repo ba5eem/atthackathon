@@ -26,20 +26,15 @@
     canvas.height = video.videoHeight;
     canvas.getContext('2d').drawImage(video, 0, 0);
     // Other browsers will fall back to image/png
-image/jpeg');
-    console.log(img.src)
-    // let oReq = new XMLHttpRequest();
-    // oReq.open("GET", "http://www.example.org/example.txt");
-    // oReq.send();
+    img.src = canvas.toDataURL('image/jpeg');
 
-    // var blob = new Blob(["Hello, world!"], { type: "text/plain;charset=utf-8" });
-    // saveAs(blob, "hello world.txt");
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", 'http://127.0.0.1:8080/', true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send(img.src); 
 
-    // canvas.toBlob(function (blob) {
-    //   saveAs(blob, "pretty image.png");
-    // });
-
-  }, 5  
+  }, 2000);
+  
   function handleSuccess(stream) {
     video.srcObject = stream;
   }
