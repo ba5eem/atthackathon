@@ -14,7 +14,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const rekognition = new AWS.Rekognition();
 
-router.get('/', function(req, res, next) {
+app.get('/', ( req, res ) =>{
+  res.json('Smoke Test');
+});
+/*
+app.get('/', function(req, res, next) {
   rekognition.recognizeFace(params, function (err, data) {
     if (err) console.log(err, err.stack);
       else {
@@ -24,9 +28,9 @@ router.get('/', function(req, res, next) {
     }
   });
 });
+*/
 
 
-app.listen(PORT, () => {
-  db.sequelize.sync({ force: false });
-  console.log(`Listening on port: ${PORT}`);
+const server = app.listen(PORT,() => {
+  console.log(`Server connected on PORT: ${PORT}`);
 });
