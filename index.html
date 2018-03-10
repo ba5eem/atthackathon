@@ -5,25 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-  <script src="app.js"></script>
 </head>
 <body>
-
+  
   <video autoplay id="screenshot-video"></video>
   <img src="" id="screenshot-img">
   <canvas style="display:none;"></canvas>
   <button id"start">Start / Stop</button>
   <button id="screenshot">Screenshot</button>
-
+  
 </body>
-  <script>
-    const constraints = {
-      video: true
-    };
+<script src="app.js"></script>
+<!-- <script>
+    // const constraints = {
+    //   video: true
+    // };
 
-    // const vgaConstraints = {
-    //   video: {width: {exact: 640}, height: {exact: 480}}
-    // }
+    const constraints = {
+      video: {width: {exact: 640}, height: {exact: 480}}
+    }
 
     const video = document.querySelector('#screenshot-video');
     const img = document.querySelector('#screenshot-img');
@@ -50,6 +50,6 @@
 
     navigator.mediaDevices.getUserMedia(constraints).
       then(handleSuccess).catch(handleError);
-    // navigator.mediaDevices.getUserMedia(vgaConstraints, successCallback, errorCallback);
-  </script>
+    // navigator.mediaDevices.getUserMedia(vgaConstraints, handleSuccess, handleError);
+  </script> -->
 </html>
