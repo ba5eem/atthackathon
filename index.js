@@ -5,11 +5,6 @@ const axios = require('axios');
 const vision = require('node-cloud-vision-api')
 vision.init({auth: process.env.VISION_KEY})
 
-'use strict'
-
-// init with auth
-
-// construct parameters
 const req = new vision.Request({
   image: new vision.Image('./bat.jpg'),
   features: [
@@ -18,17 +13,39 @@ const req = new vision.Request({
   ]
 })
 
+function getStats(param){
+	let score;
+	if(param === 'VERY_LIKELY'){ score = 100 }
+	if(param === 'LIKELY'){ score = 90 }
+	if(param === 'POSSIBLE'){ score = 80 }
+	if(param === 'UNLIKELY'){ score = 30 }
+	if(param === 'VERY_UNLIKELY'){ score = 20 }	
+	if(param === 'UNKNOWN'){ score = 0 }
+	return score;
+}
+
 app.get('/', (request, res) => {
 	vision.annotate(req).then((elem) => {
 	  let ext = elem.responses[0].faceAnnotations[0];
-	  let local = {
-	  	detectionConfidence: ext.detectionConfidence,
-	  	joy: ext.joyLikelihood,
-	  	sorrow: ext.sorrowLikelihood,
-	  	anger: ext.angerLikelihood,
-	  	surprise: ext.surpriseLikelihood
+	  let joy = getStats(ext.joyLikelihood);
+	  let sorrow = getStats(ext.sorrowLikelihood);
+	  let anger = getStats(ext.angerLikelihood);
+	  let surprise = getStats(ext.surpriseLikelihood);
+
+	  let analysis = {
+	  	detectionConfidence: ext.detectionConfidence * 100 +'%',
+	  	joy: joy,
+	  	sorrow: sorrow,
+	  	anger: anger,
+	  	surprise: surprise,
+	  	VERY_LIKELY: 100,
+	  	LIKELY: 90,
+	  	POSSIBLE: 80,
+	  	UNLIKELY: 30,
+	  	VERY_UNLIKELY: 20,
+	  	UNKNOWN: 0
 	  }
-	  res.json(local);
+	  res.json(analysis);
 		}, (e) => {
 	  	console.log('Error: ')
 	})
