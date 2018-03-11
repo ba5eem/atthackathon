@@ -7,6 +7,7 @@ const app             = express();
 const PORT            = process.env.PORT || 8080;
 const axios = require('axios');
 const vision = require('node-cloud-vision-api');
+const path            = require('path');
 vision.init({auth: process.env.VISION_KEY});
 
 var fs = require('fs');
