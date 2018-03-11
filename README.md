@@ -1,7 +1,14 @@
 ## AT&T Hackathon
 * Best IoT App Overall - 2nd Place - Submission for Honolulu AT&T Hackathon 2018
 
-# MoodLighting
+# MoodLighting Team
+
+* [Ella](https://github.com/ellamae0821) - [DevLeague](https://github.com/devleague)
+* [Oksana](https://github.com/oksanaharris) - [DevLeague](https://github.com/devleague)
+* [HyperKind](https://github.com/Hyperkind) - [DevLeague](https://github.com/devleague)
+* [Joceln](https://github.com/jocelynsaysrawr) - [DevLeague](https://github.com/devleague)
+* [Olena](https://github.com/op9674a) - [General Assembly](https://generalassemb.ly/)
+* [Baseem](https://github.com/ba5eem) - [DevLeague](https://github.com/devleague)
 
 
 # About
