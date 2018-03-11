@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Button, Well, Image } from 'react-bootstrap';
 import YouTube from 'react-youtube';
 import Webcam from 'react-webcam';
+import Particles from 'react-particles-js';
 
 
 
@@ -51,6 +52,7 @@ class App extends React.Component {
   render() {
     const {url,emoColor} = this.state;
     let color;
+    let logo = 'sss'
     if(emoColor === 'joy'){ color = 'pink'; }
     if(emoColor === 'sorrow'){ color = 'grey'; }
     if(emoColor === 'anger'){ color = 'red'; }
@@ -70,6 +72,23 @@ class App extends React.Component {
                   width={350}/>
 
                   <h1>FACEMOTING</h1>
+                  <Particles 
+              params={{
+                particles: {
+                  line_linked: {
+                    shadow: {
+                      enable: true,
+                      color: "#3CA9D1",
+                      blur: 5
+                    }
+                  }
+                }
+              }}
+              style={{
+                width: '100%',
+                backgroundImage: `url(${logo})` 
+              }}
+            />
               </div>
               <Button bsStyle="success" onClick={this.capture}>Capture photo</Button>
             </div>
