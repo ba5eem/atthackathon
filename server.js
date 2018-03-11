@@ -14,7 +14,7 @@ const hue = require('node-hue-api');
 const HueApi = hue.HueApi;
 const lightState = hue.lightState;
 const hostname = "192.168.2.2";
-const username = "001788fffe19b699";
+const username = "AT42ej27YdL6uup75sU1khX8HTfsfwxjc1QUkkBM";
 
 var api = new HueApi(hostname, username)
 
