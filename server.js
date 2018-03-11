@@ -7,39 +7,35 @@ const app             = express();
 const PORT            = process.env.PORT || 8080;
 const axios = require('axios');
 const vision = require('node-cloud-vision-api');
-vision.init({auth: process.env.VISION_KEY})
+vision.init({auth: process.env.VISION_KEY});
 
-let image;
-
-const req = new vision.Request({
-  image: new vision.Image(image),
-  features: [
-    new vision.Feature('FACE_DETECTION', 4),
-    new vision.Feature('LABEL_DETECTION', 10),
-  ]
-})
+var fs = require('fs');
+var multer  = require('multer');
+var upload = multer({ dest: 'uploads/' });
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
 function getStats(param){
   let score;
-  if(param === 'VERY_LIKELY'){ score = 100 }
-  if(param === 'LIKELY'){ score = 90 }
-  if(param === 'POSSIBLE'){ score = 80 }
-  if(param === 'UNLIKELY'){ score = 30 }
-  if(param === 'VERY_UNLIKELY'){ score = 20 }
-  if(param === 'UNKNOWN'){ score = 0 }
+  if(param === 'VERY_LIKELY'){ score = 100; }
+  if(param === 'LIKELY'){ score = 90; }
+  if(param === 'POSSIBLE'){ score = 80; }
+  if(param === 'UNLIKELY'){ score = 30; }
+  if(param === 'VERY_UNLIKELY'){ score = 20; }
+  if(param === 'UNKNOWN'){ score = 0; }
   return score;
 }
 
 app.post("/api/load", (request, res) => {
   console.log('aldkfjlaksdj', request.body)
-  
+
 });
 
-app.get('/', (request, res) => {
-  console.log(request.body)
-  image = request.body;
+app.post('/api/analyze', upload.single('capturedImage'), (request, res) => {
+
+  console.log('running post / on server');
+
+  console.log('req body captured image', request.body.capturedImage);
 
 //   const req = new vision.Request({
 //   image: new vision.Image(image),
@@ -48,25 +44,62 @@ app.get('/', (request, res) => {
 //     new vision.Feature('LABEL_DETECTION', 10),
 //   ]
 // })
+  // console.log('this is the image', request.file);
 
-  vision.annotate(req).then((elem) => {
-    let ext = elem.responses[0].faceAnnotations[0];
-    let joy = getStats(ext.joyLikelihood);
-    let sorrow = getStats(ext.sorrowLikelihood);
-    let anger = getStats(ext.angerLikelihood);
-    let surprise = getStats(ext.surpriseLikelihood);
+  // let imgSrc = './scary.jpeg';
 
-    let label_results = elem.responses[0].labelAnnotations;
+  // let image = imgSrc.read();
 
-    console.log('label results', label_results);
+  let image;
 
-    let foundClown = label_results.some(labelObj => {
-      return labelObj.description === 'clown';
+  var base64Data = request.body.capturedImage;
+  base64Data = base64Data.replace(/^data:image\/jpeg;base64,/, "");
+  console.log('writing file...');
+
+  return new Promise((resolve, reject) => {
+    fs.writeFile(__dirname + "/upload/out.jpeg", base64Data, 'base64', function(err) {
+      if (err) console.log(err);
+      fs.readFile(__dirname + "/upload/out.jpeg", function(err, data) {
+        if (err) throw err;
+        console.log('reading file...', data.toString('base64'));
+        return resolve(data);
+          // res.send(data);
+        });
     });
+  })
+  .then((file) => {
+    let newImage = './upload/out.jpeg';
 
-    console.log('foundClown', foundClown);
+    const req = new vision.Request({
+      image: new vision.Image(newImage),
+      // image: {
+      //   content: image
+      // },
+      features: [
+      new vision.Feature('FACE_DETECTION', 4),
+      new vision.Feature('LABEL_DETECTION', 10),
+      ]
+    })
 
-    let analysis = [{
+    vision.annotate(req).then((elem) => {
+      console.log('this is coming back from Google Vision', elem);
+      let ext = elem.responses[0].faceAnnotations[0];
+      let joy = getStats(ext.joyLikelihood);
+      let sorrow = getStats(ext.sorrowLikelihood);
+      let anger = getStats(ext.angerLikelihood);
+      let surprise = getStats(ext.surpriseLikelihood);
+
+      let label_results = elem.responses[0].labelAnnotations;
+
+      // console.log('label results', label_results);
+
+      let foundClown = label_results.some(labelObj => {
+        return labelObj.description === 'clown';
+      });
+
+      console.log('foundClown', foundClown);
+
+      let analysis = [{
         detectionConfidence: ext.detectionConfidence * 100 +'%',
         joy: joy,
         sorrow: sorrow,
@@ -93,9 +126,12 @@ app.get('/', (request, res) => {
     analysis[3].highest = highest;
     analysis[3].clown = foundClown;
 
+    console.log('THIS IS ANALYSIS', analysis);
+
     res.json(analysis);
-    }, (e) => {
-      console.log('Error: ')
+  }, (e) => {
+    console.log('Error: ')
+  });
   })
 })
 
