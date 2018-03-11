@@ -26,9 +26,14 @@
     canvas.height = video.videoHeight;
     canvas.getContext('2d').drawImage(video, 0, 0);
     // Other browsers will fall back to image/png
-    img.src = canvas.toDataURL('image/webp');
-    
-  }, 1000);
+    img.src = canvas.toDataURL('image/jpeg');
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", 'http://127.0.0.1:8080/', true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send(img.src); 
+
+  }, 2000);
   
   function handleSuccess(stream) {
     video.srcObject = stream;

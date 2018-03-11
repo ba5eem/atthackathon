@@ -9,6 +9,7 @@ const axios = require('axios');
 const vision = require('node-cloud-vision-api');
 vision.init({auth: process.env.VISION_KEY})
 
+
 //LIGHTS STUFF HERE
 const hue = require('node-hue-api');
 const HueApi = hue.HueApi;
@@ -21,6 +22,8 @@ var api = new HueApi(hostname, username)
 
 const image = './sorrow.jpg'; // or image save from front-end
 
+let image;
+
 const req = new vision.Request({
   image: new vision.Image(image),
   features: [
@@ -28,6 +31,8 @@ const req = new vision.Request({
     new vision.Feature('LABEL_DETECTION', 10),
   ]
 })
+
+app.use(bodyParser.urlencoded({ extended: false }))
 
 function getStats(param){
   let score;
@@ -40,13 +45,39 @@ function getStats(param){
   return score;
 }
 
+app.post("/api/load", (request, res) => {
+  console.log('aldkfjlaksdj', request.body)
+
+});
+
 app.get('/', (request, res) => {
+  console.log(request.body)
+  image = request.body;
+
+//   const req = new vision.Request({
+//   image: new vision.Image(image),
+//   features: [
+//     new vision.Feature('FACE_DETECTION', 4),
+//     new vision.Feature('LABEL_DETECTION', 10),
+//   ]
+// })
+
   vision.annotate(req).then((elem) => {
     let ext = elem.responses[0].faceAnnotations[0];
     let joy = getStats(ext.joyLikelihood);
     let sorrow = getStats(ext.sorrowLikelihood);
     let anger = getStats(ext.angerLikelihood);
     let surprise = getStats(ext.surpriseLikelihood);
+
+    let label_results = elem.responses[0].labelAnnotations;
+
+    console.log('label results', label_results);
+
+    let foundClown = label_results.some(labelObj => {
+      return labelObj.description === 'clown';
+    });
+
+    console.log('foundClown', foundClown);
 
     let analysis = [{
         detectionConfidence: ext.detectionConfidence * 100 +'%',
@@ -67,16 +98,20 @@ app.get('/', (request, res) => {
         anger: 'red/purple',
         suprised: 'yellow'
       },{
-        highest: undefined
+        highest: undefined,
+        clown: undefined
       }]
     let obj = analysis[0]; // emotion object
     let highest = Object.keys(obj).reduce((a, b) => obj[a] > obj[b] ? a : b);
     analysis[3].highest = highest;
+    analysis[3].clown = foundClown;
+
     res.json(analysis);
     }, (e) => {
       console.log('Error: ')
   })
 })
+
 
 app.post('/changeColor', function(req, res){
   var state = lightState.create();
@@ -113,8 +148,6 @@ app.post('/changeColor', function(req, res){
   res.end();
 
 });
-
-
 
 
 app.get('*', ( req, res ) => {
