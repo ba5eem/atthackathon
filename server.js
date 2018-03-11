@@ -35,34 +35,18 @@ function getStats(param){
   return score;
 }
 
-app.post("/api/load", (request, res) => {
-  console.log('aldkfjlaksdj', request.body)
+// app.post("/api/load", (request, res) => {
+//   console.log('aldkfjlaksdj', request.body)
 
-});
+// });
 
 app.post('/api/analyze', upload.single('capturedImage'), (request, res) => {
 
   console.log('running post / on server');
 
-  console.log('req body captured image', request.body.capturedImage);
-
-//   const req = new vision.Request({
-//   image: new vision.Image(image),
-//   features: [
-//     new vision.Feature('FACE_DETECTION', 4),
-//     new vision.Feature('LABEL_DETECTION', 10),
-//   ]
-// })
-  // console.log('this is the image', request.file);
-
-  // let imgSrc = './scary.jpeg';
-
-  // let image = imgSrc.read();
-
-  let image;
-
   var base64Data = request.body.capturedImage;
   base64Data = base64Data.replace(/^data:image\/jpeg;base64,/, "");
+
   console.log('writing file...');
 
   return new Promise((resolve, reject) => {
@@ -72,25 +56,22 @@ app.post('/api/analyze', upload.single('capturedImage'), (request, res) => {
         if (err) throw err;
         console.log('reading file...', data.toString('base64'));
         return resolve(data);
-          // res.send(data);
         });
     });
   })
   .then((file) => {
+
     let newImage = './upload/out.jpeg';
 
-    const req = new vision.Request({
+    const visionReq = new vision.Request({
       image: new vision.Image(newImage),
-      // image: {
-      //   content: image
-      // },
       features: [
       new vision.Feature('FACE_DETECTION', 4),
       new vision.Feature('LABEL_DETECTION', 10),
       ]
-    })
+    });
 
-    vision.annotate(req).then((elem) => {
+    return vision.annotate(visionReq).then((elem) => {
       console.log('this is coming back from Google Vision', elem);
       let ext = elem.responses[0].faceAnnotations[0];
       let joy = getStats(ext.joyLikelihood);
@@ -129,20 +110,66 @@ app.post('/api/analyze', upload.single('capturedImage'), (request, res) => {
       },{
         highest: undefined,
         clown: undefined
-      }]
-    let obj = analysis[0]; // emotion object
-    let highest = Object.keys(obj).reduce((a, b) => obj[a] > obj[b] ? a : b);
-    analysis[3].highest = highest;
-    analysis[3].clown = foundClown;
+      }];
 
-    console.log('THIS IS ANALYSIS', analysis);
+      let obj = analysis[0]; // emotion object
+      let highest = Object.keys(obj).reduce((a, b) => obj[a] > obj[b] ? a : b);
+      analysis[3].highest = highest;
+      analysis[3].clown = foundClown;
 
-    res.json(analysis);
-  }, (e) => {
-    console.log('Error: ')
+      // console.log('THIS IS ANALYSIS', analysis);
+
+      // res.json(analysis);
+      return analysis;
+    })
+    .then((analysis) => {
+      console.log ('ANALYSIS in the next then', analysis);
+
+    //   var state = lightState.create();
+
+    //   // Set light state to 'on' first
+    //   api.setLightState(5, state.on())
+    //     .then(displayResult)
+    //     .done();
+
+
+    //   var mood = analysis.highest;
+
+    //   switch (mood){
+
+    //     case "surprise":
+    //       state.hsl(17000/182, 180/2.55, 255/2.55);
+    //       console.log("turn yellow");
+
+    //     case "joy":
+    //       state.hsl(28/182, 129/2.55, 255/2.55);
+    //       console.log("turn pink");
+
+    //     case "anger":
+    //       state.hsl(1000/182, 190/2.55, 255/2.55);
+    //       console.log("turn red");
+
+    //     case "sorrow":
+    //       state.hsl(45000/182, 255/2.55, 255/2.55);
+    //       console.log("turn blue");
+    //     default:
+    //       state.hsl(28/182, 129/2.55, 255/2.55);
+    //       console.log("default - joy");
+    //   }
+
+    //   //change the color
+    //    api.setLightState(5, state)
+    //      .then(displayResult)
+    //      .done();
+
+      res.end();
+
+    })
+    .catch(error => {
+      console.log('there is an error', error);
+    });
   });
-  })
-})
+});
 
 
 app.post('/changeColor', function(req, res){

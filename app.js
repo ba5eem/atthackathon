@@ -33,9 +33,7 @@
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", 'http://127.0.0.1:8080/api/analyze', true);
-    // xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.send(formData);
-    // console.log('this is img src', img.src);
 
   // }, 2000);
 };
