@@ -217,7 +217,7 @@ app.post('/api/analyze', upload.single('capturedImage'), (request, res) => {
     //      .then(displayResult)
     //      .done();
 
-      // res.end();
+      res.end();
 
     })
     .catch(error => {
