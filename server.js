@@ -204,7 +204,7 @@ app.post('/api/analyze', upload.single('capturedImage'), (request, res) => {
           break;
       }
 
-    return axios.put('http://10.172.61.40/api/AT42ej27YdL6uup75sU1khX8HTfsfwxjc1QUkkBM/lights/001788fffe19b699/state', hueApiPutObj)
+    return axios.put('http://192.168.2.2/api/AT42ej27YdL6uup75sU1khX8HTfsfwxjc1QUkkBM/lights/1/state', hueApiPutObj)
       .then(function (response) {
         console.log('returning from axios put', response);
       })
