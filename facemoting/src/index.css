@@ -1,0 +1,56 @@
+body{
+    font-size: 62.5%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Rammetto One', cursive;
+  }
+
+.wrapper{
+  display: flex-wrap;
+  justify-content: center;
+  margin: auto;
+}
+
+.lights{
+	width: 340px;
+	height: 200px;
+	border-radius: 100px;
+	margin: 20px;
+}
+
+.hue-wrapper{
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	border-top: 5px solid grey;
+}
+
+
+.input-image input{
+	width: 200px;
+}
+
+.feature{
+	padding: 10px;
+}
+
+.clown img{
+	position:absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    height:100%;
+    width:100%;
+}
+
+.options-img{
+  display: flex;
+  justify-content: flex-start;
+}
+
+.options-img h1{
+  margin-left: 100px;
+  margin-top: 100px;
+  font-size: 50px;
+}
