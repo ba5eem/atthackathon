@@ -17,10 +17,10 @@ var upload = multer({ dest: 'uploads/' });
 const hue = require('node-hue-api');
 const HueApi = hue.HueApi;
 const lightState = hue.lightState;
-const hostname = "192.168.2.2";
+const hostname = "10.172.61.40";
 const username = "AT42ej27YdL6uup75sU1khX8HTfsfwxjc1QUkkBM";
 
-var api = new HueApi(hostname, username)
+var api = new HueApi(hostname, username);
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
