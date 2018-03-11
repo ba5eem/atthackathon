@@ -126,6 +126,8 @@ app.post('/api/analyze', upload.single('capturedImage'), (request, res) => {
     .then((analysis) => {
       console.log ('ANALYSIS in the next then', analysis);
 
+
+
     //   var state = lightState.create();
 
     //   // Set light state to 'on' first
@@ -134,36 +136,88 @@ app.post('/api/analyze', upload.single('capturedImage'), (request, res) => {
     //     .done();
 
 
-    //   var mood = analysis.highest;
+      let mood = analysis.highest;
 
-    //   switch (mood){
+      let hueApiPutObj = {
+        on: true,
+        sat: 129,
+        bri: 255,
+        hue: 28
+      }
 
-    //     case "surprise":
-    //       state.hsl(17000/182, 180/2.55, 255/2.55);
-    //       console.log("turn yellow");
+      switch (mood){
 
-    //     case "joy":
-    //       state.hsl(28/182, 129/2.55, 255/2.55);
-    //       console.log("turn pink");
+        case "surprise":
+          hueApiPutObj = {
+            on: true,
+            sat: 180,
+            bri: 255,
+            hue: 17000
+          }
+          // state.hsl(17000/182, 180/2.55, 255/2.55);
+          console.log("turn yellow");
+          break;
 
-    //     case "anger":
-    //       state.hsl(1000/182, 190/2.55, 255/2.55);
-    //       console.log("turn red");
+        case "joy":
 
-    //     case "sorrow":
-    //       state.hsl(45000/182, 255/2.55, 255/2.55);
-    //       console.log("turn blue");
-    //     default:
-    //       state.hsl(28/182, 129/2.55, 255/2.55);
-    //       console.log("default - joy");
-    //   }
+           hueApiPutObj = {
+            on: true,
+            sat: 129,
+            bri: 255,
+            hue: 28
+          }
+          // state.hsl(28/182, 129/2.55, 255/2.55);
+          console.log("turn pink");
+          break;
+
+        case "anger":
+          // state.hsl(1000/182, 190/2.55, 255/2.55);
+          hueApiPutObj = {
+            on: true,
+            sat: 190,
+            bri: 255,
+            hue: 1000
+          }
+          console.log("turn red");
+          break;
+
+        case "sorrow":
+          // state.hsl(45000/182, 255/2.55, 255/2.55);
+          hueApiPutObj = {
+            on: true,
+            sat: 255,
+            bri: 255,
+            hue: 45000
+          }
+          console.log("turn blue");
+          break;
+
+        default:
+          // state.hsl(28/182, 129/2.55, 255/2.55);
+          hueApiPutObj = {
+            on: true,
+            sat: 129,
+            bri: 255,
+            hue: 28
+          }
+          console.log("default - joy");
+          break;
+      }
+
+    return axios.put('url', hueApiPutObj)
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
     //   //change the color
     //    api.setLightState(5, state)
     //      .then(displayResult)
     //      .done();
 
-      res.end();
+      // res.end();
 
     })
     .catch(error => {
