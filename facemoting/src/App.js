@@ -52,7 +52,7 @@ class App extends React.Component {
   render() {
     const {url,emoColor} = this.state;
     let color;
-    let logo = 'sss'
+    let logo = 'sss';
     if(emoColor === 'joy'){ color = 'pink'; }
     if(emoColor === 'sorrow'){ color = 'grey'; }
     if(emoColor === 'anger'){ color = 'red'; }
@@ -73,22 +73,22 @@ class App extends React.Component {
 
                   <h1>FACEMOTING</h1>
                   <Particles 
-              params={{
-                particles: {
-                  line_linked: {
-                    shadow: {
-                      enable: true,
-                      color: "#3CA9D1",
-                      blur: 5
-                    }
-                  }
-                }
-              }}
-              style={{
-                width: '100%',
-                backgroundImage: `url(${logo})` 
-              }}
-            />
+                    params={{
+                      particles: {
+                        line_linked: {
+                          shadow: {
+                            enable: true,
+                            color: "#3CA9D1",
+                            blur: 5
+                          }
+                        }
+                      }
+                    }}
+                    style={{
+                      width: '100%',
+                      backgroundImage: `url(${logo})` 
+                    }}
+                  />
               </div>
               <Button bsStyle="success" onClick={this.capture}>Capture photo</Button>
             </div>
@@ -96,12 +96,12 @@ class App extends React.Component {
 
           <div className="hue-wrapper">
             <div className="feature" style={{marginRight: 20, textAlign: 'center'}}>
-              <h2>Philips Hue Bridge Integration</h2>
+              <h2>Philips Hue Bridge</h2>
               <div style={{backgroundColor: color}}className="lights"></div>
             </div>
 
             <div className="feature" style={{marginRight: 20, textAlign: 'center'}}>
-              <h2>YouTube Api Integration</h2>
+              <h2>YouTube Api</h2>
               <YouTube
               videoId={this.state.videoUrl}
               opts={opts}
