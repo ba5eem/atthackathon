@@ -204,13 +204,13 @@ app.post('/api/analyze', upload.single('capturedImage'), (request, res) => {
           break;
       }
 
-    return axios.put('url', hueApiPutObj)
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    return axios.put('http://10.172.61.40/api/AT42ej27YdL6uup75sU1khX8HTfsfwxjc1QUkkBM/lights/001788fffe19b699/state', hueApiPutObj)
+      .then(function (response) {
+        console.log('returning from axios put', response);
+      })
+      .catch(function (error) {
+        console.log('error on axios put', error);
+      });
 
     //   //change the color
     //    api.setLightState(5, state)
