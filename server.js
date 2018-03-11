@@ -9,6 +9,16 @@ const axios = require('axios');
 const vision = require('node-cloud-vision-api');
 vision.init({auth: process.env.VISION_KEY})
 
+//LIGHTS STUFF HERE
+const hue = require('node-hue-api');
+const HueApi = hue.HueApi;
+const lightState = hue.lightState;
+const hostname = "192.168.2.2";
+const username = "AT42ej27YdL6uup75sU1khX8HTfsfwxjc1QUkkBM";
+
+var api = new HueApi(hostname, username)
+
+
 const image = './sorrow.jpg'; // or image save from front-end
 
 const req = new vision.Request({
@@ -68,8 +78,40 @@ app.get('/', (request, res) => {
   })
 })
 
-app.post("/", (req, res) => {
-//handle meee!!! in progress
+app.post('/changeColor', function(req, res){
+  var state = lightState.create();
+
+  // Set light state to 'on' first
+  api.setLightState(5, state.on())
+    .then(displayResult)
+    .done();
+
+  if (req.body.highest){
+    var mood = req.body.highest;
+    if(id == "surprise"){
+      state.hsl(17000/182, 180/2.55, 255/2.55);
+      console.log("turn yellow");
+
+    } else if(id == "joy"){
+      state.hsl(28/182, 129/2.55, 255/2.55);
+      console.log("turn pink");
+
+    }  else if(mood == "anger"){
+      state.hsl(1000/182, 190/2.55, 255/2.55);
+      console.log("turn red");
+
+    } else if(mood == "sorrow"){
+      state.hsl(45000/182, 255/2.55, 255/2.55);
+      console.log("turn blue");
+    }
+  }
+  //change the color
+   api.setLightState(5, state)
+     .then(displayResult)
+     .done();
+
+  res.end();
+
 });
 
 
