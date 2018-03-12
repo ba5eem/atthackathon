@@ -17,6 +17,9 @@
 * [Baseem](https://github.com/ba5eem) - [DevLeague](https://github.com/devleague)
 
 
+# Demo UI Screenshot:
+<img src="./img.png" width="450"/>
+
 # About
 
 * Are you in denial about how crappy you're feeling? Do you never realize when you're actually feeling good about or something or life in general? MoodLighting will let you know how you're doing when you're just not sure and just want to be at home with whatever the hell kind of feelings you're having. MoodLighting will also create the ambience to match how you feel.

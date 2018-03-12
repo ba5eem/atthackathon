@@ -38,6 +38,7 @@ function getStats(param){
 
 app.get('/', (request, res) => {
 	vision.annotate(req).then((elem) => {
+		console.log(elem.responses[0]);
 	  let ext = elem.responses[0].faceAnnotations[0];
 	  let joy = getStats(ext.joyLikelihood);
 	  let sorrow = getStats(ext.sorrowLikelihood);

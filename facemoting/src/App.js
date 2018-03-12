@@ -51,7 +51,7 @@ class App extends React.Component {
 
   render() {
     const {url,emoColor} = this.state;
-    let color;
+    let color = 'purple';
     let logo = 'sss';
     if(emoColor === 'joy'){ color = 'pink'; }
     if(emoColor === 'sorrow'){ color = 'grey'; }
