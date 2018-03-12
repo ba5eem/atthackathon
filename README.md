@@ -1,8 +1,8 @@
 ## AT&T Hackathon
-# [![Google](https://img.shields.io/badge/GOOGLEVISION-API-brightgreen.svg)](https://cloud.google.com/vision/)
-# [![DevLeague](https://img.shields.io/badge/DevLeague-Alumni-blue.svg)](https://www.devleague.com/)
-# [![PhilipsHue](https://img.shields.io/badge/PhilipsHue-IOT-green.svg)](https://www2.meethue.com/en-us)
-# [![AT&T](https://img.shields.io/badge/Hackathon-AT%26T-blue.svg)](https://twitter.com/attdeveloper)
+[![Google](https://img.shields.io/badge/GOOGLEVISION-API-brightgreen.svg)](https://cloud.google.com/vision/)
+[![DevLeague](https://img.shields.io/badge/DevLeague-Alumni-blue.svg)](https://www.devleague.com/)
+[![PhilipsHue](https://img.shields.io/badge/PhilipsHue-IOT-green.svg)](https://www2.meethue.com/en-us)
+[![AT&T](https://img.shields.io/badge/Hackathon-AT%26T-blue.svg)](https://twitter.com/attdeveloper)
 * Best IoT App Overall - 2nd Place - Submission for Honolulu AT&T Hackathon 2018
 
 
