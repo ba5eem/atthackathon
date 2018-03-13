@@ -1,4 +1,4 @@
-# AT&T Hackathon
+# AT&T Hackathon - Mar. 2018 - IoT
 [![Google](https://img.shields.io/badge/GOOGLEVISION-API-brightgreen.svg)](https://cloud.google.com/vision/)
 [![DevLeague](https://img.shields.io/badge/DevLeague-Alumni-blue.svg)](https://www.devleague.com/)
 [![PhilipsHue](https://img.shields.io/badge/PhilipsHue-IOT-green.svg)](https://www2.meethue.com/en-us)
