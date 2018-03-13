@@ -1,4 +1,4 @@
-## AT&T Hackathon
+# AT&T Hackathon
 [![Google](https://img.shields.io/badge/GOOGLEVISION-API-brightgreen.svg)](https://cloud.google.com/vision/)
 [![DevLeague](https://img.shields.io/badge/DevLeague-Alumni-blue.svg)](https://www.devleague.com/)
 [![PhilipsHue](https://img.shields.io/badge/PhilipsHue-IOT-green.svg)](https://www2.meethue.com/en-us)
@@ -7,7 +7,7 @@
 
 
 
-# MoodLighting Team
+## MoodLighting Team
 
 * [Ella](https://github.com/ellamae0821) - [DevLeague](https://github.com/devleague)
 * [Oksana](https://github.com/oksanaharris) - [DevLeague](https://github.com/devleague)
@@ -17,37 +17,37 @@
 * [Baseem](https://github.com/ba5eem) - [DevLeague](https://github.com/devleague)
 
 
-# Demo UI Screenshot:
+## Demo UI Screenshot:
 <img src="./img.png" width="450"/>
 
-# About
+## About
 
 * Are you in denial about how crappy you're feeling? Do you never realize when you're actually feeling good about or something or life in general? MoodLighting will let you know how you're doing when you're just not sure and just want to be at home with whatever the hell kind of feelings you're having. MoodLighting will also create the ambience to match how you feel.
 
-# Approach
+## Approach
 
 * MoodLighting was made with React, Google Vision API & YouTube API. Images are captured in intervals from video capture. The Google Vision API provide the user's emotion analysis. The user's emotion will determine and change the color of their light bulb and browser experience.
 
-# MVP
+## MVP
 
 * User should be able to capture an image of their face through their browser using React WebCam. The user's light bulb should change to the color associated with each mood.
 
-# Stretch Goals Met
+## Stretch Goals Met
 
 * Youtube Videos customized from your current emotional status
 
-# Stretch Goals
+## Stretch Goals
 
 * User will be able to customize their light preferences to reflect their matching moods. They will also have the option to further prompt the light to change to assist in adjusting their mood. For example, if the light turns red because they are angry, they have the option to change the light to their designated "calm" color such as blue. Additional prompts and APIs would allow the user to order their favorite Starbucks concoction or comfort meal, play their favorite mood associated songs, or show them some cat pics.
 
-# Getting Started
+## Getting Started
 
 ```js
 npm install 
 npm start
 ```
 
-# How to connect to your Philips HUE Light, a quick on/off example:
+## How to connect to your Philips HUE Light, a quick on/off example:
 
 ```js
 const app = require('express')();
