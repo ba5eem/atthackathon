@@ -46,3 +46,33 @@
 npm install 
 npm start
 ```
+
+# How to connect to your Philips HUE Light, a quick on/off example:
+
+```js
+const app = require('express')();
+const axios = require('axios');
+
+//Follow the steps here to get your unique username:
+//https://www.developers.meethue.com/documentation/getting-started
+
+//const username = process.env.USERNAME;
+const url = `http://192.168.0.2/api/${username}/lights/2/state`;
+
+app.get('/on', (req, res) => {
+	axios.put(url, {"on":true})
+	.then(elem => {
+		res.json('Light is ON: ');
+	})
+})
+
+app.get('/off', (req, res) => {
+	axios.put(url, {"on":false})
+	.then(elem => {
+		res.json('Light is OFF: ');
+	})
+})
+
+app.listen(9000);
+```
+
