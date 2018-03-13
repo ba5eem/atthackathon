@@ -56,7 +56,7 @@ const axios = require('axios');
 //Follow the steps here to get your unique username:
 //https://www.developers.meethue.com/documentation/getting-started
 
-//const username = process.env.USERNAME;
+const username = process.env.USERNAME;
 const url = `http://192.168.0.2/api/${username}/lights/2/state`;
 
 app.get('/on', (req, res) => {
